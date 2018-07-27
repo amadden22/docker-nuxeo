@@ -37,12 +37,10 @@ RUN wget ${EPEL_RPM_URL} \
 ARG NUX_DEXTOP_FRIBIDI_RPM_URL=ftp://ftp.pbone.net/mirror/li.nux.ro/download/nux/dextop/retired/libfribidi-0.19.2-3.el7.nux.x86_64.rpm
 RUN rpm -Uvh ${NUX_DEXTOP_FRIBIDI_RPM_URL}
 
-RUN REPOLIST=rhel-7-server-rpms,rhel-7-server-optional-rpms \
-### Add your package needs here
-    INSTALL_PKGS="perl ImageMagick ffmpeg ffmpeg2theora ufraw poppler-utils libreoffice-core libwpd-tools perl-Image-ExifTool ghostscript" && \
-    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+RUN INSTALL_PKGS="perl ImageMagick ffmpeg ffmpeg2theora ufraw poppler-utils libreoffice-core libwpd-tools perl-Image-ExifTool ghostscript" && \
+    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms rhel-7-server-optional-rpms --setopt=tsflags=nodocs \
       --security --sec-severity=Important --sec-severity=Critical && \
-    yum -y upgrade && yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
+    yum -y upgrade && yum -y install --disablerepo "*" --enablerepo rhel-7-server-rpms rhel-7-server-optional-rpms --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
     yum clean all
     
 ADD licenses /licenses
