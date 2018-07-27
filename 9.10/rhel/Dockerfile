@@ -40,7 +40,7 @@ RUN rpm -Uvh ${NUX_DEXTOP_FRIBIDI_RPM_URL}
 # enable repo for libreoffice
 RUN yum-config-manager --enable rhel-7-server-optional-rpms
 # Add needed convert tools
-RUN yum -y upgrade && yum -y install \
+RUN yum -y upgrade && yum -y install --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
     perl \
     ImageMagick \
     ffmpeg \
