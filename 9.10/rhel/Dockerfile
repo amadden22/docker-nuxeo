@@ -18,8 +18,11 @@ LABEL name="nuxeo/nuxeo" \
       io.openshift.min-cpu="2"
 
 # install java
-RUN yum install -y \
-       java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip
+RUN INSTALL_PKGS="java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip" && \
+    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+      --security --sec-severity=Important --sec-severity=Critical && \
+    yum -y install --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
+    yum clean all
 
 #Add repositories need it for ffmpeg2theora and ffmpeg
 ARG EPEL_RPM_URL=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
