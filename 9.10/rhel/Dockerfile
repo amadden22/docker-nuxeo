@@ -18,11 +18,8 @@ LABEL name="nuxeo/nuxeo" \
       io.openshift.min-cpu="2"
 
 # install java
-RUN INSTALL_PKGS="java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip" && \
-    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
-      --security --sec-severity=Important --sec-severity=Critical && \
-    yum -y install --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
-    yum clean all
+RUN yum-config-manager --disable rhel-7-server-htb-rpms --enable rhel-7-server-optional-rpms && yum -y install \
+       java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip
 
 #Add repositories need it for ffmpeg2theora and ffmpeg
 ARG EPEL_RPM_URL=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -37,10 +34,8 @@ RUN wget ${EPEL_RPM_URL} \
 ARG NUX_DEXTOP_FRIBIDI_RPM_URL=ftp://ftp.pbone.net/mirror/li.nux.ro/download/nux/dextop/retired/libfribidi-0.19.2-3.el7.nux.x86_64.rpm
 RUN rpm -Uvh ${NUX_DEXTOP_FRIBIDI_RPM_URL}
 
-# enable repo for libreoffice
-RUN yum-config-manager --enable rhel-7-server-optional-rpms
 # Add needed convert tools
-RUN yum -y upgrade && yum -y install --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+RUN yum -y upgrade && yum -y install \
     perl \
     ImageMagick \
     ffmpeg \
