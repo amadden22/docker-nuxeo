@@ -16,11 +16,9 @@ LABEL name="nuxeo/nuxeo" \
       io.openshift.tags="nuxeo" \
       io.openshift.min-memory="2Gi" \
       io.openshift.min-cpu="2"
-
-### Add necessary Red Hat repos here
-RUN REPOLIST=rhel-7-server-rpms,rhel-7-server-optional-rpms \
+            
 ### Add your package needs here
-    INSTALL_PKGS="java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip" && \
+RUN INSTALL_PKGS="java-1.8.0-openjdk java-1.8.0-openjdk-devel wget unzip" && \
     yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
       --security --sec-severity=Important --sec-severity=Critical && \
     yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
